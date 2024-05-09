@@ -98,19 +98,19 @@ app.post('/login', (req, res) => {
     });
 });
 
-app.post('/date', (req, res) => {
-    const { startDate, endDate } = req.body;
+// app.post('/date', (req, res) => {
+//     const { startDate, endDate } = req.body;
 
-    console.log('Date Data:', { startDate, endDate });
+//     console.log('Date Data:', { startDate, endDate });
     
-    res.json({ success: true, message: 'Date data submitted successfully' });
-});
+//     res.json({ success: true, message: 'Date data submitted successfully' });
+// });
 
 app.post('/apply-leave', (req, res) => {
-    const { name, email, startDate, endDate } = req.body;
+    const { name, email, leaveStartDate, leaveEndDate } = req.body;
 
     const sql = "INSERT INTO leave_requests (name, email, leaveStartDate, leaveEndDate, status) VALUES (?, ?, ?, ?, 'pending')";
-    const values = [name, email, startDate, endDate];
+    const values = [name, email, leaveStartDate, leaveEndDate];
 
     db.query(sql, values, (err, result) => {
         if (err) {

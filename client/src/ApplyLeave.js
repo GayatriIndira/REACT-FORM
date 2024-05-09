@@ -6,9 +6,10 @@ import Validation from './LeaveValidation';
 
 function ApplyLeave() {
     const [values, setValues] = useState({
-        startDate: '',
-        endDate: ''
+        leaveStartDate: '',
+        leaveEndDate: ''
     });
+
     const navigate = useNavigate();
     const [errors, setErrors] = useState({})
 
@@ -19,19 +20,28 @@ function ApplyLeave() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const validationErrors = Validation(values, setErrors, submitLeaveRequest);
-        setErrors(validationErrors);
-        console.log('Submitting leave request:', values);
+        if (!values.leaveStartDate || !values.leaveEndDate) {
+            setErrors({ date: 'Please select both start and end dates.' });
+        } else {
+            const validationErrors = Validation(values, setErrors, submitLeaveRequest);
+            setErrors(validationErrors);
+            console.log('Submitting leave request:', values);
+            if (Object.keys(validationErrors).length === 0) {
+                submitLeaveRequest();
+            }
+        }
     };
-
+    
     const submitLeaveRequest = () => {
         const leaveRequestData = {
-            leaveStartDate: values.startDate,
-            leaveEndDate: values.endDate
+            name: 'Gayatri',
+            email: 'cgayatri@indiratrade.com',
+            leaveStartDate: values.leaveStartDate,
+            leaveEndDate: values.leaveEndDate
         };
         console.log('Sending leave request:', leaveRequestData)
 
-        axios.post('http://localhost:4004/leave-request', leaveRequestData)
+        axios.post('http://localhost:4004/apply-leave', leaveRequestData)
             .then(res => {
                 console.log('Leave request submitted successfully', res);
             })
@@ -46,16 +56,18 @@ function ApplyLeave() {
               <h2>Apply For Leave</h2>
                    <form action="" onSubmit={handleSubmit}>
                 <div className='mb-3'>
-                    <label htmlFor="startDate"><strong>Start Date</strong></label>
-                    <input type="date" name="startDate" onChange={handleInput} className='form-control rounded-0'/>
+                    <label htmlFor="leaveStartDate"><strong>Start Date</strong></label>
+                    <input type="date" name="leaveStartDate" value={values.startDate} onChange={handleInput} className='form-control rounded-0'/>
                 </div>
                 <div className='mb-3'>
-                    <label htmlFor="endDate"><strong>End Date</strong></label>
-                    <input type="date" name="endDate" onChange={handleInput} className='form-control rounded-0'/>
+                    <label htmlFor="leaveEndDate"><strong>End Date</strong></label>
+                    <input type="date" name="leaveEndDate" value={values.endDate} onChange={handleInput} className='form-control rounded-0'/>
                 </div>
                 {errors.date && <p className="text-danger">{errors.date}</p>}
-                <button type='submit' className='btn btn-success w-100 rounded-0'><strong>Apply</strong></button>
+                <button type='submit' className='btn btn-success w-50 rounded-0 '><strong>Apply</strong></button>
             </form>
+            <br />
+            {/* <Link to="/dashboard/home">Back to Dashboard</Link> */}
         </div>
       </div>
     )

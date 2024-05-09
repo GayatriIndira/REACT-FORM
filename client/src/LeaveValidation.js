@@ -1,7 +1,7 @@
 function Validation(values, setErrors, submitLeaveRequest) {
     const currentDate = new Date();
-    const selectedStartDate = new Date(values.startDate);
-    const selectedEndDate = new Date(values.endDate);
+    const selectedStartDate = new Date(values.leaveStartDate);
+    const selectedEndDate = new Date(values.leaveEndDate);
 
     if (selectedStartDate > currentDate && selectedEndDate > selectedStartDate) {
         // Dates are valid

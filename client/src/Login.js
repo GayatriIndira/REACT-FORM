@@ -42,6 +42,7 @@ function Login() {
     axios.post('http://localhost:4004/login', values)
             .then(res => {
                 if (res.data.success) {
+                    localStorage.setItem('token', res.data.token);
                     navigate('/dashboard');
                 } else {
                     alert("Invalid email or password");
